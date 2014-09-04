@@ -10,6 +10,7 @@
 				endpoint: "api/endpoint/service?v=0.1",
 				query: "",
 				template: "",
+				target: null,
 				type: "text"
 		};
 
@@ -31,13 +32,25 @@
 							this.connectEndpoint();
 						}
 						
+						
 				},
 				connectEndpoint: function () {					
 					
 					if ( this.settings.type === "text" ) {
 						this.getSuggetion();
-					}					
+					}
+					if ( this.settings.target !== undefined) {
+						this.endpointInfo();
+					}
 				},
+				endpointInfo: function () {
+					$.get(this.settings.endpoint, function (data) {
+						console.log(data);
+					});
+				},
+				normalizeData: function (data) {
+				
+				},				
 				
 				getSuggetion: function () {	
 					var key = this.settings.field;
