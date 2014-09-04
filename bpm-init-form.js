@@ -7,6 +7,7 @@ $("input[bpm-endpoint]").each( function () {
 	var endpoint = $(this).attr('bpm-endpoint'),
 		field = $(this).attr('bpm-get'),
 		template = $(this).attr('bpm-template'),
+		target = $(this).attr('bpm-get-info'),
 		type = $(this).attr('type');
 	
 	$(this).bpmApi({
@@ -14,6 +15,7 @@ $("input[bpm-endpoint]").each( function () {
 		field : field,
 		type : type,
 		query : "",
+		target: target,
 		template : template,
 		onSelected : function (obj, data) {			
 			$.each(data, function (idx, val) {				

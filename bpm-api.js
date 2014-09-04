@@ -38,7 +38,7 @@
 					if ( this.settings.type === "text" ) {
 						this.getSuggetion();
 					}
-					if ( this.settings.target !== undefined) {
+					if ( this.settings.target !== null) {
 						this.endpointInfo();
 					}
 				},
@@ -49,7 +49,7 @@
 					var tpl = "<table  class='table'><thead><tr><th>Campo</th><tr></thead><tbody>{{tr}}</tbody></table>";
 					var table = "";
 					$.ajax({ 
-						url: this.settings.endpoint, 
+						url: 'api/endpoint' +this.settings.endpoint, 
 						dataType: 'json',
 						type: 'GET' }).done( function (data) {
 							console.log(data);
@@ -63,7 +63,8 @@
                                                 	      $.each(data.resultset[0], function (key, value) {
 								   table = table + tr.replace("{{td}}",td.replace("{{value}}",key));
 							      }); 
-								obj.html(tpl.replace("{{tr}}",table));                                                	}
+								obj.html(tpl.replace("{{tr}}",table));
+                            }
 						}); 						
 				},
 				
@@ -101,7 +102,7 @@
 							}
 						},
 						 dataType: 'json',
-						remote: 'api/endpoint' + this.settings.endpoint+'?q=%QUERY'
+						remote: 'api/endpoint' +this.settings.endpoint+'?q=%QUERY'
 					});
 					
 					service.initialize();
