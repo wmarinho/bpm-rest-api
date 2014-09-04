@@ -101,7 +101,7 @@
 							}
 						},
 						 dataType: 'json',
-						remote: this.settings.endpoint+'?q=%QUERY'
+						remote: 'api/endpoint' + this.settings.endpoint+'?q=%QUERY'
 					});
 					
 					service.initialize();
