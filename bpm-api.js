@@ -11,7 +11,7 @@
 				query: "",
 				template: "",
 				target: null,
-				type: "text"
+				type: null 
 		};
 
 		// The actual plugin constructor
@@ -32,10 +32,9 @@
 							this.connectEndpoint();
 						}
 						
-						
 				},
 				connectEndpoint: function () {					
-					
+				 console.log(this.settings);		
 					if ( this.settings.type === "text" ) {
 						this.getSuggetion();
 					}
@@ -44,13 +43,30 @@
 					}
 				},
 				endpointInfo: function () {
-					$.get(this.settings.endpoint, function (data) {
-						console.log(data);
-					});
+					var obj = $(this.element);
+					var td = "<td>{{value}}</td>";
+					var tr = "<tr>{{td}}</tr>";
+					var tpl = "<table  class='table'><thead><tr><th>Campo</th><tr></thead><tbody>{{tr}}</tbody></table>";
+					var table = "";
+					$.ajax({ 
+						url: this.settings.endpoint, 
+						dataType: 'json',
+						type: 'GET' }).done( function (data) {
+							console.log(data);
+							if ( data.metadata !== undefined )  {
+								var arrCol = [];
+								for (var i in data.metadata) {
+									console.log(data.metadata[i].colName);
+									arrCol[i] = data.metadata[i].colName;
+								}
+							} else if (data.resultset !== undefined && data.resultset.length > 0 ) {
+                                                	      $.each(data.resultset[0], function (key, value) {
+								   table = table + tr.replace("{{td}}",td.replace("{{value}}",key));
+							      }); 
+								obj.html(tpl.replace("{{tr}}",table));
+                                                	}
+						}); 						
 				},
-				normalizeData: function (data) {
-				
-				},				
 				
 				getSuggetion: function () {	
 					var key = this.settings.field;

@@ -38,7 +38,7 @@
 			<li class="dropdown">
 			  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ancine <span class="caret"></span></a>
 			  <ul class="dropdown-menu" role="menu" id="endpointList">
-				<li><a href="#canais" bpm-endpoint="endpoint/ancine/canais" bpm-info="tableInfo">Canais</a></li>
+				<li><a href="#canais" bpm-endpoint="endpoint/ancine/canais">Canais</a></li>
 			  </ul>
 			</li>
 		  </ul>
@@ -61,11 +61,9 @@
 		  <!-- Default panel contents -->
 		  <div class="panel-heading">{{Enpoint}}</div>
 		  <div class="panel-body">
-			<p>...</p>
+			<div bpm-get-info="metadata"></div>
 		  </div>
 
-		  <!-- Table -->
-		  <div id="tableInfo"></div>
 		
 		</div>
 	  </div><!-- /.container-fluid -->
