@@ -63,8 +63,7 @@
                                                 	      $.each(data.resultset[0], function (key, value) {
 								   table = table + tr.replace("{{td}}",td.replace("{{value}}",key));
 							      }); 
-								obj.html(tpl.replace("{{tr}}",table));
-                                                	}
+								obj.html(tpl.replace("{{tr}}",table));                                                	}
 						}); 						
 				},
 				
@@ -79,7 +78,7 @@
 						queryTokenizer: Bloodhound.tokenizers.whitespace,
 						ttl: 10000,
 						prefetch: {
-							url: this.settings.endpoint,
+							url: 'api/endpoint' + this.settings.endpoint,
 							filter: function (data) {
 								var result = [];
 									if ( data.metadata !== undefined )  {
