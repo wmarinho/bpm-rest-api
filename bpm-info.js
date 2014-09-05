@@ -8,7 +8,8 @@ $("a[bpm-endpoint]").click( function () {
 	var targetInfo = $("div[bpm-get-info]");
         console.log("ok");	
 	targetInfo.bpmApi({
-		endpoint : endpoint
+		endpoint : endpoint,
+		target : targetInfo
 	});
 	console.log("ok");
 });

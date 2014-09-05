@@ -16,10 +16,11 @@ $("input[bpm-endpoint]").each( function () {
 		type : type,
 		query : "",
 		target: target,
+		prefix: "",
 		template : template,
 		onSelected : function (obj, data) {			
 			$.each(data, function (idx, val) {				
-				$("input[bpm-set="+ idx +"]").val(val);
+				$("input[bpm-set='"+ idx +"']").val(val);
 			});
 	 }
 	});

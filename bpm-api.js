@@ -5,13 +5,16 @@
 ;(function ( $, window, document, undefined ) {
 
 		// Create the defaults once
+		
 		var pluginName = "bpmApi",
 				defaults = {
 				endpoint: "api/endpoint/service?v=0.1",
+				prefix: "",
 				query: "",
-				template: "",
+				template: "",				
 				target: null,
-				type: null 
+				type: null,
+				onLoad: null
 		};
 
 		// The actual plugin constructor
@@ -34,75 +37,82 @@
 						
 				},
 				connectEndpoint: function () {					
-				 console.log(this.settings);		
+				 //console.log(this.settings);		
 					if ( this.settings.type === "text" ) {
 						this.getSuggetion();
 					}
 					if ( this.settings.target !== null) {
-						this.endpointInfo();
+							
+						this.getData();
 					}
 				},
-				endpointInfo: function () {
-					var obj = $(this.element);
-					var td = "<td>{{value}}</td>";
-					var tr = "<tr>{{td}}</tr>";
-					var tpl = "<table  class='table'><thead><tr><th>Campo</th><tr></thead><tbody>{{tr}}</tbody></table>";
-					var table = "";
+				normalizeData : function (data,obj) {
+					
+					var result = [];
+					
+					if ( data.metadata !== undefined )  {
+						var arrCol = [];
+						for (var i in data.metadata) {
+							arrCol[i] = data.metadata[i].colName;
+						}									
+						for (var j in data.resultset) {		
+							var arr = {};
+							for (var i in data.resultset[j]) {
+								arr[arrCol[i]] = data.resultset[j][i];
+							}
+							result.push(arr);
+						}
+						obj.data = result;									
+					} else if (data.resultset != undefined && data.resultset.length > 0 ) {
+						obj.data = data.resultset;									
+					} else obj.data = data;					
+					
+					if ( obj.settings.target !== null) {
+						obj.dataView(obj.settings.template,obj.settings.target,obj.data);
+						if (typeof(obj.settings.onLoad) === 'function') {
+							obj.settings.onLoad();
+						}
+					}
+					return obj.data;
+				},
+				getData: function () {
+					var obj = this;					
 					$.ajax({ 
-						url: 'api/endpoint' +this.settings.endpoint, 
+						url: this.settings.prefix + this.settings.endpoint, 
 						dataType: 'json',
-						type: 'GET' }).done( function (data) {
-							console.log(data);
-							if ( data.metadata !== undefined )  {
-								var arrCol = [];
-								for (var i in data.metadata) {
-									console.log(data.metadata[i].colName);
-									arrCol[i] = data.metadata[i].colName;
-								}
-							} else if (data.resultset !== undefined && data.resultset.length > 0 ) {
-                                                	      $.each(data.resultset[0], function (key, value) {
-								   table = table + tr.replace("{{td}}",td.replace("{{value}}",key));
-							      }); 
-								obj.html(tpl.replace("{{tr}}",table));
-                            }
+						type: 'GET' }).done(function (data) {
+							obj.normalizeData(data,obj)
 						}); 						
 				},
-				
+				dataView: function (tpl,target,data) {
+					var resultset = { resultset : data };
+					
+					//var options = this.settings.template || '{{#list}}{{sched_fotoRecurso}} {{sched_nomeRecurso}}{{/list}}';
+					var source   = $("#" + tpl).html();		
+					var template = Handlebars.compile(source);
+					$("#" + target).html(template(resultset));
+					$("#" + target + ' table').dataTable();
+					
+					
+					
+					
+				},
 				getSuggetion: function () {	
 					var key = this.settings.field;
 					var name = this.settings.name;
-					var template = this.settings.template || '<p><strong>{{'+key+'}}</strong></p>';
+					var template = this.settings.template || '<p><strong>{{'+key+'}}</strong></p>' ;
 					var onSelected = typeof(this.settings.onSelected) === 'function' ? this.settings.onSelected : null;					
-					
+					var obj = this;
 					var service = new Bloodhound({
 						datumTokenizer: Bloodhound.tokenizers.obj.whitespace(key),
 						queryTokenizer: Bloodhound.tokenizers.whitespace,
 						ttl: 10000,
 						prefetch: {
-							url: 'api/endpoint' + this.settings.endpoint,
-							filter: function (data) {
-								var result = [];
-									if ( data.metadata !== undefined )  {
-										var arrCol = [];
-										for (var i in data.metadata) {
-											arrCol[i] = data.metadata[i].colName;
-										}									
-										for (var j in data.resultset) {		
-											var arr = {};
-											for (var i in data.resultset[j]) {
-												arr[arrCol[i]] = data.resultset[j][i];
-											}
-											result.push(arr);
-										}
-										this.data = result;									
-									} else if (data.resultset != undefined && data.resultset.length > 0 ) {
-										this.data = data.resultset;									
-									} else this.data = data;
-								return this.data;
-							}
-						},
+							url: this.settings.prefix + this.settings.endpoint,
+							filter: obj.normalizeData
+						}, 
 						 dataType: 'json',
-						remote: 'api/endpoint' +this.settings.endpoint+'?q=%QUERY'
+						remote: this.settings.prefix +this.settings.endpoint+'?q=%QUERY'
 					});
 					
 					service.initialize();
