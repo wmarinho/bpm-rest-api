@@ -13,8 +13,8 @@ $( document ).ajaxStop(function() {
 
 $(document).ready(function () {
 
-    var url = window.location;
-    
+    var url = $('.navbar-brand').attr('href') || window.location.href;
+  
     $('#qrcode').ClassyQR({
         create : true,
         type : 'url',
@@ -61,6 +61,6 @@ $("button[bpm-endpoint]").each( function () {
 		endpoint : endpoint,
 		template : template,
 		target : target,
-		prefix : ""
+		prefix : "endpoint"
 	 });
 });
