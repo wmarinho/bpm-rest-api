@@ -11,6 +11,20 @@ $( document ).ajaxStop(function() {
 	$( "#loading" ).hide();
 });
 
+$(document).ready(function () {
+
+    var url = window.location;
+    
+    $('#qrcode').ClassyQR({
+        create : true,
+        type : 'url',
+        size: '90',
+        url : encodeURIComponent(url)
+    });
+
+    
+});
+/*
 
 $("input[bpm-endpoint]").each( function () {
 	var endpoint = $(this).attr('bpm-endpoint'),
@@ -35,29 +49,18 @@ $("input[bpm-endpoint]").each( function () {
 	});
 });
 
+*/
 
-$("a[bpm-endpoint]").click( function () {
+
+$("button[bpm-endpoint]").each( function () {
 	var endpoint = $(this).attr('bpm-endpoint'),
-		field = $(this).attr('bpm-get'),
 		template = $(this).attr('bpm-template'),
-		target = $(this).attr('bpm-target'),
-		type = $(this).attr('type');
-	//console.log(target);
-	$('#' + target).bpmApi({
+		target = $(this).attr('bpm-target');
+	
+	$(this).bpmApi({
 		endpoint : endpoint,
 		template : template,
 		target : target,
-		onLoad : function () {
-		
-			$("button[bpm-endpoint]").click( function () {						
-					var endpoint = $(this).attr('bpm-endpoint');
-					console.log(endpoint);
-					$('#' + target).bpmApi({
-						endpoint : endpoint,
-						template : template,
-						target : target
-					 });
-				});
-		}
+		prefix : ""
 	 });
 });

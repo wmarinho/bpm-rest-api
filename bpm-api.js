@@ -18,7 +18,7 @@
 		};
 
 		// The actual plugin constructor
-		function Plugin ( element, options ) {
+		function bpmApi ( element, options ) {
 				this.element = element;
 
 				this.settings = $.extend( {}, defaults, options );
@@ -28,7 +28,7 @@
 				this.init();
 		}
 
-		$.extend(Plugin.prototype, {
+		$.extend(bpmApi.prototype, {
 				init: function () {
 						
 						if ( this.settings.endpoint !== undefined) {
@@ -42,8 +42,12 @@
 						this.getSuggetion();
 					}
 					if ( this.settings.target !== null) {
-							
-						this.getData();
+						var obj = this;	
+						//console.log(this.settings);
+						$(this.element).click ( function () {
+							$('#' + obj.settings.target).html("");
+							obj.getData();
+						});  
 					}
 				},
 				normalizeData : function (data,obj) {
@@ -90,11 +94,24 @@
 					//var options = this.settings.template || '{{#list}}{{sched_fotoRecurso}} {{sched_nomeRecurso}}{{/list}}';
 					var source   = $("#" + tpl).html();		
 					var template = Handlebars.compile(source);
-					$("#" + target).html(template(resultset));
-					$("#" + target + ' table').dataTable();
-					
-					
-					
+					$("#" + target).html(template(resultset)); 
+					$("#" + target + ' table').dataTable( {"oLanguage" : {
+						"sProcessing": "Processando...",
+						"sLengthMenu": "Mostrar _MENU_", 
+						"sZeroRecords": "Não foram encontrados resultados",
+						"sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
+						"sInfoEmpty": "Mostrando de 0 a 0 de 0 registros",
+						"sInfoFiltered": "",
+						"sInfoPostFix": "",
+						"sSearch": "Buscar:",
+						"sUrl": "",
+						"oPaginate": {
+							"sFirst": "Primeiro",
+							"sPrevious": "Anterior",
+							"sNext": "Seguinte",
+							"sLast": "Último" 
+						}
+					}}); 
 					
 				},
 				getSuggetion: function () {	
@@ -151,7 +168,7 @@
 		$.fn[ pluginName ] = function ( options ) {
 				this.each(function() {
 						if ( !$.data( this, "plugin_" + pluginName ) ) {
-								$.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
+								$.data( this, "plugin_" + pluginName, new bpmApi( this, options ) );
 						}
 				});
 
