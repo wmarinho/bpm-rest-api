@@ -12,8 +12,10 @@
 				prefix: "",
 				query: "",
 				template: "",				
+				templateUrl: null,				
 				target: null,
-				type: null,
+				objType: null,
+				dataType: "json",
 				onLoad: null
 		};
 
@@ -38,19 +40,27 @@
 				},
 				connectEndpoint: function () {					
 				 //console.log(this.settings);		
-					if ( this.settings.type === "text" ) {
+					if ( this.settings.objType === "text" ) {
 						this.getSuggetion();
 					}
 					if ( this.settings.target !== null) {
 						var obj = this;	
-						//console.log(this.settings);
+						
 						$(this.element).click ( function () {
 							$('#' + obj.settings.target).html("");
 							obj.getData();
 						});  
 					}
 				},
-				normalizeData : function (data,obj) {
+				getData: function () {
+					var obj = this;					
+					$.ajax({ 
+						url: this.settings.prefix + this.settings.endpoint, 
+						dataType: this.settings.dataType,
+						type: 'GET' }).done(function (data) {							
+								obj.normalizeData(data,obj);							
+						}); 						
+				},normalizeData : function (data,obj) {
 					
 					var result = [];
 					
@@ -72,27 +82,35 @@
 					} else obj.data = data;					
 					
 					if ( obj.settings.target !== null) {
-						obj.dataView(obj.settings.template,obj.settings.target,obj.data);
+						obj.dataView(obj.settings.template,obj.settings.target,obj.data, obj.settings.templateUrl);
+						
 						if (typeof(obj.settings.onLoad) === 'function') {
 							obj.settings.onLoad();
 						}
 					}
 					return obj.data;
 				},
-				getData: function () {
-					var obj = this;					
-					$.ajax({ 
-						url: this.settings.prefix + this.settings.endpoint, 
-						dataType: 'json',
-						type: 'GET' }).done(function (data) {
-							obj.normalizeData(data,obj)
-						}); 						
-				},
-				dataView: function (tpl,target,data) {
+				
+				dataView: function (tpl,target,data, templateUrl) {
 					var resultset = { resultset : data };
+					var source;
+					//console.log(templateUrl);
+					if ( templateUrl !== null ) {
+						$.ajax({ 
+							url: templateUrl,
+							async: false,
+							type: 'GET',
+							dataType: 'html'
+						}).done(function (data) {							
+							source = data;
+						});
+					} else {					
+						source = $("#" + tpl).html();
+					}
+					//console.log(html);
+					//console.log(source);
+					//console.log(resultset);
 					
-					//var options = this.settings.template || '{{#list}}{{sched_fotoRecurso}} {{sched_nomeRecurso}}{{/list}}';
-					var source   = $("#" + tpl).html();		
 					var template = Handlebars.compile(source);
 					$("#" + target).html(template(resultset)); 
 					$("#" + target + ' table').dataTable( {"oLanguage" : {
@@ -128,7 +146,7 @@
 							url: this.settings.prefix + this.settings.endpoint,
 							filter: obj.normalizeData
 						}, 
-						 dataType: 'json',
+						 dataType: this.settings.dataType,
 						remote: this.settings.prefix +this.settings.endpoint+'?q=%QUERY'
 					});
 					

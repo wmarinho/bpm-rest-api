@@ -13,7 +13,7 @@ $("input[bpm-endpoint]").each( function () {
 	$(this).bpmApi({
 		endpoint : endpoint,
 		field : field,
-		type : type,
+		objType : type,
 		query : "",
 		target: target,
 		prefix: "",
