@@ -13,7 +13,8 @@ $( document ).ajaxStop(function() {
 
 $(document).ready(function () {
 
-    var url = $('.navbar-brand').attr('href') || window.location.href;
+    var url = $('.navbar-brand').attr('href') !== "#" ? 
+		$('.navbar-brand').attr('href') : window.location.href;
    
     $('#qrcode').ClassyQR({
         create : true,
@@ -21,6 +22,8 @@ $(document).ready(function () {
         size: '90',
         url : encodeURIComponent(url)
     });
+	
+
 	
 	$("a[href^='#/']").each(function () {
 		var view = $(this).attr('href');
@@ -35,19 +38,12 @@ $(document).ready(function () {
 		 }); 	
 	});
 	
+	url_arr = url.split('#');
 	
-	$("button[bpm-endpoint]").each( function () {
-		var endpoint = $(this).attr('bpm-endpoint'),
-			template = $(this).attr('bpm-template'),
-			target = $(this).attr('bpm-target');
-		
-		$(this).bpmApi({
-			endpoint : endpoint,
-			template : template,
-			target : target,
-			prefix : "endpoint"
-		 });
-	});
+	if ( url_arr[1] !== "" ) {
+		$("a[href='#"+url_arr[1]+"']").click();
+	}
+	
 
 });
 
