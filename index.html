@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<!-- Angular ... comming soon -->
-<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<html lang="en"> 
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Cache-Control" content="no-store" />
-    <title>Sample</title>
+    <title>Elenco Multishow</title>
 
     <!-- Bootstrap -->
     <link href="static/css/normalize.css" rel="stylesheet">
@@ -27,7 +23,7 @@
   </head>
   <body>
     <div class="container">  
-	  <nav class="navbar navbar-default hide" role="navigation">
+	  <nav class="navbar navbar-default" role="navigation">
 		
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -37,7 +33,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			  </button>
-			  <a class="navbar-brand" href="#">Brand</a>
+			   <a class="navbar-brand" href="http://api.globosat.net.br/multishow">Multishow - Gestão de Talentos <br /> http://api/multishow</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -46,12 +42,9 @@
 			  <ul class="nav navbar-nav" id="main-menu"></ul>
 			  
 			  <!-- User info -->
-			  <ul class="nav navbar-nav navbar-right" id="user-menu">
+			  <ul class="nav navbar-nav navbar-right" id="user-menu"> 
 				<li class="dropdown">
-				  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="username" class="glyphicon glyphicon-user"> Username</span> <span class="caret"></span></a>
-				  <ul class="dropdown-menu" role="menu">
-					<li><a href="#">Profile</a></li>
-				  </ul>
+				   <span id="qrcode"></span>
 				</li>
 			  </ul>
 			  
@@ -61,13 +54,14 @@
 	  <div class="row"> 
 		  <div class="btn-group btn-group-justified">
 		  <div class="btn-group">
-			<a href="#/msw.html" class="btn btn-default glyphicon glyphicon-user" data-endpoint="/msw/elenco/Multishow Elenco.json"> Elenco</a>
+			<a href="#/msw.html" class="btn btn-default glyphicon glyphicon-user" data-endpoint="/msw/elenco/Multishow Elenco.json" data-nocache="/msw/elenco?paramCategoria=Multishow+Elenco"> Elenco</a>
 		  </div>
 		  <div class="btn-group">
-			<a href="#/msw.html" class="btn btn-default glyphicon glyphicon-film"  data-endpoint="/msw/elenco/Multishow Programas.json"> Programas</a>
+			<a href="#/msw.html" class="btn btn-default glyphicon glyphicon-film" data-endpoint="/msw/elenco/Multishow Programas.json" data-nocache="/msw/elenco?paramCategoria=Multishow+Programas"> Programas</a>
 		  </div>
 		  </div>
 		</div>
+		<!--<div class="row checkbox" align="right"><label><input type="checkbox" id="data-cache" value="1" /> Acelerar navegação</label> </div>-->  
 		<div class="row" align="center" id="loading" style="display:none"><img src="static/img/ajax-loader.gif" /></div>
 		<div class="row" style="height:20px"></div>
 		<div class="row" id="content"></div>
@@ -104,7 +98,7 @@
 		{{/nav}}
 	</script>
 	<script type="text/javascript">
-		var menu = { 'nav' : [
+		/* var menu = { 'nav' : [
 			  {	url : '#/teste.html', title : 'Link 1', endpoint: '/ancine/canais'},
 			  { url : '#', title : 'Menu 1',
 				submenu : [
@@ -123,7 +117,7 @@
 			$(".navbar").removeClass("hide");
 		} else {
 			console.log('Menu is not defined');
-		}
+		} */
 		
 	</script>
   </body>

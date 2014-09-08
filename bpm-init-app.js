@@ -30,15 +30,18 @@ $(document).ready(function () {
 		view = view.replace("#","");
 		var endpoint = $(this).attr('data-endpoint');
 		
+		
+		
+		
 		$(this).bpmApi({
 			endpoint : endpoint,	
 			templateUrl : "static/html" + view,
 			target : "content",
-			prefix : "endpoint"
+			prefix: "endpoint"
 		 }); 	
 	});
 	
-	url_arr = url.split('#');
+	url_arr = window.location.href.split('#');
 	
 	if ( url_arr[1] !== "" ) {
 		$("a[href='#"+url_arr[1]+"']").click();

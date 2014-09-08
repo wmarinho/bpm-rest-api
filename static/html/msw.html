@@ -1,5 +1,5 @@
 <div class="row" style="margin-bottom: 30px;"> </div>
-                        <div class="row">
+                        <div class="row table-responsive">
                           <table class="table">
                                 <thead>
                                   <th>Foto</th>
@@ -10,7 +10,7 @@
                                 <tbody>
                                   {{#resultset}}
                                         <tr>
-                                          <td><img class="img-circle" width="auto" height="100" src="{{sched_fotoRecurso}}" /></td>
+                                          <td><img class="img-circle" style="height:100px;"  src="{{sched_fotoRecurso}}" /></td>
                                           <td>{{sched_nomeRecurso}}</td>
                                           <td>{{sched_tipoRecurso}}</td>
                                           <td>{{sched_faixaEtariaRecurso}}</td>
@@ -18,4 +18,5 @@
                                   {{/resultset}}
                                 </tbody>
                           </table>
+  			</div>
 
