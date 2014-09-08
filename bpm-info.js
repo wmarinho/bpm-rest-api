@@ -6,9 +6,9 @@ Usage:
 $("a[bpm-endpoint]").click( function () {
 	var endpoint = $(this).attr('bpm-endpoint');
 	var targetInfo = $("div[bpm-get-info]");
-        console.log("ok");	
+        
 	targetInfo.bpmApi({
 		endpoint : endpoint
 	});
-	console.log("ok");
+	
 });
